@@ -6,8 +6,8 @@ let MovieClient = express.Router();
 
 MovieClient.get('/all', function(req, res) {
     Guidebox.movies.list({source: 'hulu'})
-    .then(function(result) {
-        console.log(result.results);
+    .then(function(data) {
+        res.status(200).send(data.results);
     })
     .catch(function (e) {
         console.log(`${e}`.red);

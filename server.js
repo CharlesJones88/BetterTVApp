@@ -22,7 +22,6 @@ app.use('/api/v1/shows', showApi);
 app.use('/api/v1/movies', movieApi);
 app.use(express.static(WEB));
 
-
 app.get('*', function(req, res) {
     res.status(404).sendFile(`${WEB}/404.html`);
 });
