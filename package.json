@@ -1,0 +1,30 @@
+{
+  "name": "bettertvapp",
+  "version": "1.0.0",
+  "description": "TV App for CS4690",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "colors": "^1.1.2",
+    "compression": "^1.6.2",
+    "express": "^4.15.2",
+    "guidebox": "^1.1.1",
+    "morgan": "^1.8.1",
+    "serve-favicon": "^2.4.2",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CharlesJones88/BetterTVApp.git"
+  },
+  "author": "Charles Jones & Allison Turnblom",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CharlesJones88/BetterTVApp/issues"
+  },
+  "homepage": "https://github.com/CharlesJones88/BetterTVApp#readme"
+}
