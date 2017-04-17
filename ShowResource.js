@@ -9,7 +9,9 @@ let Guidebox = require('guidebox')(apiKey);
 let ShowClient = express.Router();
 
 ShowClient.get('/all', function(req, res) {
-    Guidebox.shows.list({source: source})
+    let limit = req.query.limit;
+    let offset = req.query.offset;
+    Guidebox.shows.list({source: source, limit: limit, offset: offset})
     .then(function(data) {
         res.status(200).send(data.results);
     })
