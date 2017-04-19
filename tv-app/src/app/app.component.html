@@ -1,16 +1,10 @@
 <div>
-  <div *ngFor="let movieItems of movieGenreList">
-    <h1>{{movieItems.genre}}</h1>
-    <div class="inline-block" *ngFor="let movie of movieItems.movies">
-      <movie-detail [movie]="movie"></movie-detail>
-    </div>
+  <div class="inline-block" *ngFor="let movie of movies">
+    <movie-detail [movie]="movie"></movie-detail>
   </div>
 </div>
 <div>
-  <div *ngFor="let showItems of showGenreList">
-    <h1>{{showItems.genre}}</h1>
-    <div class="inline-block" *ngFor="let show of showItems.shows">
-      <show-detail [show]="show"></show-detail>
-    </div>
+  <div class="inline-block" *ngFor="let show of shows">
+    <show-detail [show]="show"></show-detail>
   </div>
 </div>
