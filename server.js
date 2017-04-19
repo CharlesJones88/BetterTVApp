@@ -9,7 +9,6 @@ let compression = require('compression');
 let favicon = require('serve-favicon');
 let bodyParser = require('body-parser');
 let winston = require('winston');
-let genreApi = require('./GenreResource');
 let showApi = require('./ShowResource');
 let movieApi = require('./MovieResource');
 let WEB = __dirname;
@@ -24,7 +23,6 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-app.use('/api/v1/genres', genreApi)
 app.use('/api/v1/shows', showApi);
 app.use('/api/v1/movies', movieApi);
 app.use(express.static(WEB));
