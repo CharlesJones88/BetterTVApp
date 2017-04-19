@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { VideoService } from './video.service';
 import { Movie } from './Movie';
 import { Show } from './Show';
+import { Source } from './Source';
 import * as _ from 'lodash';
 
 @Component({
@@ -12,8 +13,8 @@ import * as _ from 'lodash';
 })
 export class AppComponent implements OnInit {
   public movies: Movie[] = [];
-  public movieGenreList = [];
-  public showGenreList = [];
+  public movieList = [];
+  public showList = [];
   public shows: Show[] = [];
   private movieLimit: number = 20;
   private movieOffset: number = 0;
@@ -22,33 +23,45 @@ export class AppComponent implements OnInit {
   constructor(private videoService: VideoService) {}
 
   ngOnInit(): void {
-    this.videoService.getMovies(this.movieLimit, this.movieOffset).subscribe(value => this.movies = value);
-    this.videoService.getShows(this.showLimit, this.showOffset).subscribe(value => this.shows = value);
-    // this.videoService.getGenres().subscribe(value => {
-    //   this.genres = value;
-    //   _.map(this.genres, genre => {
-    //     this.videoService.getMoviesByGenre(genre.genre).subscribe(value => {
-    //       this.movieGenreList.push({genre: genre.genre, movies: value});
-    //     });
-    //     this.videoService.getShowsByGenre(genre.genre).subscribe(value => {
-    //       this.showGenreList.push({genre: genre.genre, shows: value});
-    //     });
-    //   });
-    // });
-    this.movieOffset += this.movieLimit;
-    this.showOffset += this.showLimit;
+    this.videoService.getMoviesSources().then(value => {
+      let sources: Source[] = _.uniq(_.map(value, val => {
+        let source = new Source();
+        Object.assign(source, {display_name: val.display_name, type: val.type});
+        return source;
+      }));
+      _.each(sources, source => {
+        this.videoService.getMovies(source.type, this.movieLimit, this.movieOffset)
+        .then(value => {
+          this.movies = value;
+          this.movieList.push({source: source.display_name, movies: this.movies});
+        });
+      });
+      this.movieOffset += this.movieLimit;
+    });
+    this.videoService.getShowSources().then(value => {
+      let sources: Source[] = _.uniq(_.map(value, val => {
+        let source = new Source();
+        Object.assign(source, {display_name: val.display_name, type: val.type});
+        return source;
+      }));
+      _.each(sources, source => {
+        this.videoService.getShows(source.type, this.showLimit, this.showOffset)
+        .then(value => {
+          this.shows = value;
+          this.showList.push({source: source.display_name, shows: this.shows});
+        });
+      });
+      this.showOffset += this.showLimit;
+    });
   }
 
-  // getGenres() {
-  //   this.videoService.getGenres().subscribe(value => this.genres = value);
-  // }
   getMovies() {
-    this.videoService.getMovies(this.movieLimit, this.movieOffset).subscribe(value => {console.log(value);this.movies = this.movies.concat(value);});
+    // this.videoService.getMovies(this.movieLimit, this.movieOffset).subscribe(value => {console.log(value);this.movies = this.movies.concat(value);});
     this.movieOffset += this.movieLimit;
   }
 
   getShows() {
-    this.videoService.getShows(this.showLimit, this.showOffset).subscribe(value => this.shows = this.shows.concat(value));
+    // this.videoService.getShows(this.showLimit, this.showOffset).subscribe(value => this.shows = this.shows.concat(value));
     this.showOffset += this.showLimit;
   }
 }
