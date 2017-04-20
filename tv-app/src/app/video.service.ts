@@ -66,7 +66,7 @@ export class VideoService {
                         .then(response => response.json());
     }
 
-    getRatings() {
+    getMovieRatings() {
         return ["G", "PG", "PG-13", "R", "NR"];
     }
 }

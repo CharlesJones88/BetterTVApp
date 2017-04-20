@@ -58,33 +58,39 @@ export class AppComponent implements OnInit {
     });
   }
 
-  titleSort(list) {
+  showTitleSort(list) {
+    let sortOrder: string = this.ascending ? 'asc' : 'desc';
+    list.shows = _.orderBy(list.shows, ['title'], [sortOrder]);
+    this.ascending = !this.ascending;
+  }
+
+  movieTitleSort(list) {
     let sortOrder: string = this.ascending ? 'asc' : 'desc';
     list.movies = _.orderBy(list.movies, ['title'], [sortOrder]);
     this.ascending = !this.ascending;
   }
 
-  ratingSort(list) {
-    list.movies.sort((one, two) => this.ascending ? this.sortAsc(one, two) : this.sortDesc(one, two));
+  movieRatingSort(list) {
+    list.movies.sort((one, two) => this.ascending ? this.sortMovieAsc(one, two) : this.sortMovieDesc(one, two));
     this.ascending = !this.ascending;
   }
 
-  getRatings(): string[] {
-    return this.videoService.getRatings();
+  private getMovieRatings(): string[] {
+    return this.videoService.getMovieRatings();
   }
 
-  private sortAsc(one, two): number {
-    if(this.getRatings().indexOf(one.rating) < this.getRatings().indexOf(two.rating)) return -1;
-    if(this.getRatings().indexOf(one.rating) > this.getRatings().indexOf(two.rating)) return 1;
+  private sortMovieAsc(one, two): number {
+    if(this.getMovieRatings().indexOf(one.rating) < this.getMovieRatings().indexOf(two.rating)) return -1;
+    if(this.getMovieRatings().indexOf(one.rating) > this.getMovieRatings().indexOf(two.rating)) return 1;
 
     if(one.title < two.title) return -1;
     if(one.title > two.title) return 1;
     return 0;
   }
 
-  private sortDesc(one, two): number {
-    if(this.getRatings().indexOf(one.rating) < this.getRatings().indexOf(two.rating)) return 1;
-    if(this.getRatings().indexOf(one.rating) > this.getRatings().indexOf(two.rating)) return -1;
+  private sortMovieDesc(one, two): number {
+    if(this.getMovieRatings().indexOf(one.rating) < this.getMovieRatings().indexOf(two.rating)) return 1;
+    if(this.getMovieRatings().indexOf(one.rating) > this.getMovieRatings().indexOf(two.rating)) return -1;
     
     if(one.title < two.title) return 1;
     if(one.title > two.title) return -1;
