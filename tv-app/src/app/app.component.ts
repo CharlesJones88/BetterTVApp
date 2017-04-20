@@ -58,11 +58,14 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ratingSort() {
-    this.movieList = _.map(this.movieList, item => {
-      item.movies.sort((one, two) => this.ascending ? this.sortAsc(one, two) : this.sortDesc(one, two));
-      return item;
-    });
+  titleSort(list) {
+    let sortOrder: string = this.ascending ? 'asc' : 'desc';
+    list.movies = _.orderBy(list.movies, ['title'], [sortOrder]);
+    this.ascending = !this.ascending;
+  }
+
+  ratingSort(list) {
+    list.movies.sort((one, two) => this.ascending ? this.sortAsc(one, two) : this.sortDesc(one, two));
     this.ascending = !this.ascending;
   }
 
@@ -73,12 +76,18 @@ export class AppComponent implements OnInit {
   private sortAsc(one, two): number {
     if(this.getRatings().indexOf(one.rating) < this.getRatings().indexOf(two.rating)) return -1;
     if(this.getRatings().indexOf(one.rating) > this.getRatings().indexOf(two.rating)) return 1;
+
+    if(one.title < two.title) return -1;
+    if(one.title > two.title) return 1;
     return 0;
   }
 
   private sortDesc(one, two): number {
     if(this.getRatings().indexOf(one.rating) < this.getRatings().indexOf(two.rating)) return 1;
     if(this.getRatings().indexOf(one.rating) > this.getRatings().indexOf(two.rating)) return -1;
+    
+    if(one.title < two.title) return 1;
+    if(one.title > two.title) return -1;
     return 0;
   }
 }
