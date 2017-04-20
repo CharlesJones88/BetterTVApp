@@ -24,32 +24,34 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.videoService.getMoviesSources().then(value => {
-      let sources: Source[] = _.uniq(_.map(value, val => {
+      let sources: Source[] = _.uniqBy(_.map(value, val => {
         let source = new Source();
         Object.assign(source, {display_name: val.display_name, type: val.type});
         return source;
-      }));
+      }), 'type');
       _.each(sources, source => {
         this.videoService.getMovies(source.type, this.movieLimit, this.movieOffset)
         .then(value => {
           this.movies = value;
           this.movieList.push({source: source.display_name, movies: this.movies});
         });
+        this.showList = _.sortBy(this.showList, ['display_name']);
       });
       this.movieOffset += this.movieLimit;
     });
     this.videoService.getShowSources().then(value => {
-      let sources: Source[] = _.uniq(_.map(value, val => {
+      let sources: Source[] = _.uniqBy(_.map(value, val => {
         let source = new Source();
         Object.assign(source, {display_name: val.display_name, type: val.type});
         return source;
-      }));
+      }), 'type');
       _.each(sources, source => {
         this.videoService.getShows(source.type, this.showLimit, this.showOffset)
         .then(value => {
           this.shows = value;
           this.showList.push({source: source.display_name, shows: this.shows});
         });
+        this.showList = _.sortBy(this.showList, ['display_name']);
       });
       this.showOffset += this.showLimit;
     });
