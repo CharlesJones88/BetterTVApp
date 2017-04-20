@@ -2,8 +2,6 @@
     display: inline-block;
 }
 
-.tile-spacing {
-    margin-left: 15px;
-    marging-right: 15px;
+.padding-bottom {
+    margin-bottom: 15px;
 }
-

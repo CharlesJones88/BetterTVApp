@@ -12,9 +12,10 @@ import { Show } from './Show';
             margin-right: auto;
             display: block;
         }`,
-        `.tile-spacing {
+        `.show-cards {
+            padding: 0px;
             margin-left: 15px;
-            marging-right: 15px;
+            margin-right: 15px;
         }`
     ]
 })

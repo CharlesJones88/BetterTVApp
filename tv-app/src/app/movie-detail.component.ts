@@ -12,9 +12,15 @@ import { Movie } from './Movie';
             margin-right: auto;
             display: block;
         }`,
-        `.tile-spacing {
+        `.movie-cards {
+            width: 240px;
+            padding: 0px;
             margin-left: 15px;
-            marging-right: 15px;
+            margin-right: 15px;
+            padding-bottom: 40px;
+        }`,
+        `.content {
+            position: absolute;
         }`
     ]
 })

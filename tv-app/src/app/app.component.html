@@ -1,7 +1,7 @@
 <button style="float: right" ng-click="ratingSort()">Rating</button>
 <div *ngFor="let item of movieList">
   <h1>{{item.source}}</h1>
-  <div class="inline-block" *ngFor="let movie of item.movies">
+  <div class="inline-block padding-bottom" *ngFor="let movie of item.movies">
     <movie-detail [movie]="movie"></movie-detail>
   </div>
 </div>
