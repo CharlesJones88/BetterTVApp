@@ -1,8 +1,10 @@
 <md-card class="show-cards">
   <div>
       <img src="{{show.getMediumImage()}}">
-    <md-card-content>
-      <p class="bold">{{show.title}}</p>
+    <md-card-content class="content">
+      <div class="text"><span class="bold">{{show.title}}</span><span> - Genre: {{getGenres()}}</span></div>
+      <span class="text"> Socre: {{show.rating}} Rated: {{show.rated}}</span>
+      <p class="text plot">{{show.plot}}</p>
     </md-card-content>
   </div>
 </md-card>

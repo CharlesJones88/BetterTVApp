@@ -1,5 +1,6 @@
 let express = require('express');
 let nconf = require('nconf');
+let omdb = require('omdb');
 nconf.file({file:'config.json'});
 
 const apiKey = nconf.get('apiKey');
@@ -19,7 +20,23 @@ ShowClient.get('/all', function(req, res) {
     };
     Guidebox.shows.list(params)
     .then(function(data) {
-        res.status(200).send(data.results);
+        let promiseArray = [];
+        data.results.forEach(show => {
+            let promise = new Promise((resolve, reject) => {
+                omdb.get(show.imdb_id, {tomatoes: true}, function (err, info) {
+                    if (err) reject(err);
+                    show.rated = info.rated;
+                    show.genres = info.genres;
+                    show.plot = info.plot;
+                    show.rating = info.imdb.rating;
+                    resolve();
+                });
+            });
+            promiseArray.push(promise);
+        });
+        Promise.all(promiseArray).then(function () {
+            res.status(200).send(data.results);
+        });
     })
     .catch(function (e) {
         console.log(`${e._response.body.error}`.red);

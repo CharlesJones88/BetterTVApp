@@ -12,7 +12,11 @@ export class Show {
     public artwork_304x171: string;
     public artwork_448x252: string;
     public artwork_608x342: string;
-    public alternate_titles: Object[]
+    public alternate_titles: Object[];
+    public plot: string;
+    public rated: number;
+    public genres: string[];
+    public rating: string;
     constructor() {}
 
     getSmallImage(): string {
