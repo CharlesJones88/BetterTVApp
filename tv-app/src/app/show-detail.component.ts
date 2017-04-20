@@ -6,16 +6,20 @@ import { Show } from './Show';
     selector: 'show-detail',
     templateUrl: './show-detail.component.html',
     styles: [
-        'h2 {text-align: center}',
+        'p {text-align: left}',
         `img {     
             margin-left: auto;
             margin-right: auto;
             display: block;
         }`,
-        `.show-cards {
+        `.show-cards { 
+            width: 325px;
             padding: 0px;
             margin-left: 15px;
             margin-right: 15px;
+        }`,
+          `.bold {
+            font-weight: bold;
         }`
     ]
 })
