@@ -35,8 +35,8 @@ export class AppComponent implements OnInit {
         .then(value => {
           this.movies = value;
           this.movieList.push({source: source.display_name, movies: this.movies});
+          this.movieList = _.sortBy(this.movieList, ['display_name']);
         });
-        this.movieList = _.sortBy(this.movieList, ['display_name']);
       });
       this.movieOffset += this.movieLimit;
     });
@@ -51,8 +51,8 @@ export class AppComponent implements OnInit {
         .then(value => {
           this.shows = value;
           this.showList.push({source: source.display_name, shows: this.shows});
+          this.showList = _.sortBy(this.showList, ['display_name']);
         });
-        this.showList = _.sortBy(this.showList, ['display_name']);
       });
       this.showOffset += this.showLimit;
     });
