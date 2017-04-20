@@ -4,6 +4,7 @@
     <span class="spacer"></span>
     <button md-button (click)="movieTitleSort(item)">Title</button>
     <button md-button (click)="movieRatingSort(item)">Rating</button>
+    <button md-button (click)="movieScoreSort(item)">Score</button>
   </md-toolbar>
   <div class="inline-block padding-bottom" *ngFor="let movie of item.movies">
     <movie-detail [movie]="movie"></movie-detail>

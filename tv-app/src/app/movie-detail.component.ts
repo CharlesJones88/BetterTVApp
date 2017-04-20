@@ -9,4 +9,8 @@ import { Movie } from './Movie';
 })
 export class MovieDetailComponent {
     @Input() movie: Movie;
+
+    getGenres(): string {
+        return this.movie.genres.join(', ');
+    }
 }

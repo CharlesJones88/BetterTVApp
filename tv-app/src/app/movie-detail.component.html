@@ -2,8 +2,9 @@
   <div>
       <img src="{{movie.getMediumImage()}}">
     <md-card-content class="content">
-      <p class="bold text">{{movie.title}}</p>
-      <p class="text">{{movie.plot}}</p>
+      <div class="text"><span class="bold">{{movie.title}}</span><span> - Genre: {{getGenres()}}</span></div>
+      <span class="text">Score: {{movie.rated}} Rated: {{movie.rating}}</span>
+      <p class="text plot">{{movie.plot}}</p>
     </md-card-content>
   </div>
 </md-card>

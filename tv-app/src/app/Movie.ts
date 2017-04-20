@@ -20,6 +20,7 @@ export class Movie {
     public alternate_titles: string[];
     public plot: string;
     public rated: number;
+    public genres: string[];
     
     constructor() {}
 
