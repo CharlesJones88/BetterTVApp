@@ -58,8 +58,9 @@ export class AppComponent implements OnInit {
   }
 
   ratingSort() {
-    
-      this.movies = _.sortBy(this.movies, [])
-    
+    this.movieList = _.map(this.movieList, item => {
+      item.movies = _.sortBy(item.movies, ['rating']);
+      return item;
+    });
   }
 }

@@ -13,12 +13,10 @@ MovieClient.get('/all', function(req, res) {
     let limit = req.query.limit;
     let offset = req.query.offset;
     var params = {
+        sources: source,
         limit: limit,
         offset: offset
     };
-    if(source) {
-        params.sources = source;
-    }
     Guidebox.movies.list(params)
     .then(function(data) {
         res.status(200).send(data.results);
