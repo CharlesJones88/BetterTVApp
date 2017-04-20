@@ -58,25 +58,8 @@ export class AppComponent implements OnInit {
   }
 
   ratingSort() {
-    this.getMoviesByRating().then(() => {
+    
       this.movies = _.sortBy(this.movies, [])
-    });
-    this.getShowsByRating().then(() => {
-
-    });
-  }
-
-  getMoviesByRating() {
-    return this.videoService.getMovies(this.movieLimit, this.movieOffset).then(value => {
-      this.movies = this.movies.concat(value);
-      this.movieOffset += this.movieLimit;
-    });
-  }
-
-  getShowsByRating() {
-    return this.videoService.getShows(this.showLimit, this.showOffset).then(value => {
-      this.shows = this.shows.concat(value);
-      this.showOffset += this.showLimit;
-    });
+    
   }
 }

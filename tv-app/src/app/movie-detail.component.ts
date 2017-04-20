@@ -21,6 +21,9 @@ import { Movie } from './Movie';
         }`,
         `.content {
             position: absolute;
+        }`,
+        `.bold {
+            font-weight: bold;
         }`
     ]
 })
