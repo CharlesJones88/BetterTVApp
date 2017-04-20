@@ -12,13 +12,20 @@ ShowClient.get('/all', function(req, res) {
     let source = req.query.source;
     let limit = req.query.limit;
     let offset = req.query.offset;
-    Guidebox.shows.list({sources: source, limit: limit, offset: offset})
+    let params = {
+        limit: limit,
+        offset: offset
+    };
+    if(source) {
+        params.sources = source;
+    }
+    Guidebox.shows.list(params)
     .then(function(data) {
         res.status(200).send(data.results);
     })
     .catch(function (e) {
         console.log(`${e._response.body.error}`.red);
-        res.status(500).send('Unable to get data');
+        res.status(500).send(`${e._response.body.error}`);
     });
 });
 
@@ -30,7 +37,7 @@ ShowClient.get('/sources', function(req, res) {
     })
     .catch(function(e) {
         console.log(`${e._response.body.error}`.red);
-        res.status(500).send('Unable to get data');
+        res.status(500).send(`${e._response.body.error}`);
     });
 });
 

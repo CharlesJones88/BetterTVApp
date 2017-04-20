@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
         return source;
       }), 'type');
       _.each(sources, source => {
-        this.videoService.getMovies(source.type, this.movieLimit, this.movieOffset)
+        this.videoService.getMoviesBySource(source.type, this.movieLimit, this.movieOffset)
         .then(value => {
           this.movies = value;
           this.movieList.push({source: source.display_name, movies: this.movies});
@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
         return source;
       }), 'type');
       _.each(sources, source => {
-        this.videoService.getShows(source.type, this.showLimit, this.showOffset)
+        this.videoService.getShowsBySource(source.type, this.showLimit, this.showOffset)
         .then(value => {
           this.shows = value;
           this.showList.push({source: source.display_name, shows: this.shows});
@@ -57,13 +57,26 @@ export class AppComponent implements OnInit {
     });
   }
 
-  getMovies() {
-    // this.videoService.getMovies(this.movieLimit, this.movieOffset).subscribe(value => {console.log(value);this.movies = this.movies.concat(value);});
-    this.movieOffset += this.movieLimit;
+  ratingSort() {
+    this.getMoviesByRating().then(() => {
+      this.movies = _.sortBy(this.movies, [])
+    });
+    this.getShowsByRating().then(() => {
+
+    });
   }
 
-  getShows() {
-    // this.videoService.getShows(this.showLimit, this.showOffset).subscribe(value => this.shows = this.shows.concat(value));
-    this.showOffset += this.showLimit;
+  getMoviesByRating() {
+    return this.videoService.getMovies(this.movieLimit, this.movieOffset).then(value => {
+      this.movies = this.movies.concat(value);
+      this.movieOffset += this.movieLimit;
+    });
+  }
+
+  getShowsByRating() {
+    return this.videoService.getShows(this.showLimit, this.showOffset).then(value => {
+      this.shows = this.shows.concat(value);
+      this.showOffset += this.showLimit;
+    });
   }
 }

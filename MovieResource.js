@@ -12,13 +12,20 @@ MovieClient.get('/all', function(req, res) {
     let source = req.query.source;
     let limit = req.query.limit;
     let offset = req.query.offset;
-    Guidebox.movies.list({sources: source, limit: limit, offset: offset})
+    var params = {
+        limit: limit,
+        offset: offset
+    };
+    if(source) {
+        params.sources = source;
+    }
+    Guidebox.movies.list(params)
     .then(function(data) {
         res.status(200).send(data.results);
     })
     .catch(function (e) {
         console.log(`${e._response.body.error}`.red);
-        res.status(500).send('Unable to get data');
+        res.status(500).send(`${e._response.body.error}`);
     });
 });
 
@@ -29,7 +36,7 @@ MovieClient.get('/sources', function(req, res) {
     })
     .catch(function(e) {
         console.log(`${e._response.body.error}`.red);
-        res.status(500).send('Unable to get data');
+        res.status(500).send(`${e._response.body.error}`);
     });
 });
 

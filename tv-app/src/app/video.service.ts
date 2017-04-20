@@ -20,13 +20,7 @@ export class VideoService {
                         .then(response => response.json());
     }
 
-    getShowSources(): Promise<Source[]> {
-        return this.http.get(`http://localhost:8080/api/v1/shows/sources`)
-                        .toPromise()
-                        .then(response => response.json());
-    }
-
-    getMovies(source: string, limit: number, offset: number): Promise<Movie[]> {
+    getMoviesBySource(source: string, limit: number, offset: number): Promise<Movie[]> {
         return this.http.get(`http://localhost:8080/api/v1/movies/all?source=${source}&limit=${limit}&offset=${offset}`)
                         .toPromise()
                         .then(response => {
@@ -39,8 +33,20 @@ export class VideoService {
                             return movies;
                         });
     }
+
+    getMovies(limit: number, offset: number): Promise<Movie[]> {
+        return this.http.get(`http://localhost:8080/api/v1/movies/all?limit=${limit}&offset=${offset}`)
+                        .toPromise()
+                        .then(response => response.json());
+    }
+
+    getShowSources(): Promise<Source[]> {
+        return this.http.get(`http://localhost:8080/api/v1/shows/sources`)
+                        .toPromise()
+                        .then(response => response.json());
+    }
     
-    getShows(source: string, limit: number, offset: number): Promise<Show[]> {
+    getShowsBySource(source: string, limit: number, offset: number): Promise<Show[]> {
         return this.http.get(`http://localhost:8080/api/v1/shows/all?source=${source}&limit=${limit}&offset=${offset}`)
                         .toPromise()
                         .then(response => {
@@ -52,5 +58,11 @@ export class VideoService {
                             });
                             return shows;
                         });
+    }
+
+    getShows(limit: number, offset: number) {
+        return this.http.get(`http://localhost:8080/api/v1/shows/all?limit=${limit}&offset=${offset}`)
+                        .toPromise()
+                        .then(response => response.json());
     }
 }
