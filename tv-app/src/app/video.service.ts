@@ -65,4 +65,8 @@ export class VideoService {
                         .toPromise()
                         .then(response => response.json());
     }
+
+    getRatings() {
+        return ["G", "PG", "PG-13", "R", "NR"];
+    }
 }

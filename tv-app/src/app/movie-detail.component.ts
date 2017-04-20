@@ -24,6 +24,7 @@ import { Movie } from './Movie';
         }`,
         `.bold {
             font-weight: bold;
+            padding-left: 5px;
         }`
     ]
 })

@@ -12,6 +12,7 @@ import * as _ from 'lodash';
   providers: [VideoService]
 })
 export class AppComponent implements OnInit {
+  private ascending: boolean = true;
   public movies: Movie[] = [];
   public movieList = [];
   public showList = [];
@@ -59,8 +60,25 @@ export class AppComponent implements OnInit {
 
   ratingSort() {
     this.movieList = _.map(this.movieList, item => {
-      item.movies = _.sortBy(item.movies, ['rating']);
+      item.movies.sort((one, two) => this.ascending ? this.sortAsc(one, two) : this.sortDesc(one, two));
       return item;
     });
+    this.ascending = !this.ascending;
+  }
+
+  getRatings(): string[] {
+    return this.videoService.getRatings();
+  }
+
+  private sortAsc(one, two): number {
+    if(this.getRatings().indexOf(one.rating) < this.getRatings().indexOf(two.rating)) return -1;
+    if(this.getRatings().indexOf(one.rating) > this.getRatings().indexOf(two.rating)) return 1;
+    return 0;
+  }
+
+  private sortDesc(one, two): number {
+    if(this.getRatings().indexOf(one.rating) < this.getRatings().indexOf(two.rating)) return 1;
+    if(this.getRatings().indexOf(one.rating) > this.getRatings().indexOf(two.rating)) return -1;
+    return 0;
   }
 }
