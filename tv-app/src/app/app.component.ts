@@ -63,7 +63,16 @@ export class AppComponent implements OnInit {
     list.shows = _.orderBy(list.shows, ['title'], [sortOrder]);
     this.ascending = !this.ascending;
   }
+  showRatingSort(list) {
+    list.shows.sort((one, two) => this.ascending ? this.sortShowAsc(one, two) : this.sortShowDesc(one, two));
+    this.ascending = !this.ascending;
+  }
 
+  showScoreSort(list) {
+    let sortOrder: string = this.ascending ? 'asc' : 'desc';
+    list.shows = _.orderBy(list.shows, ['rated'], [sortOrder]);
+    this.ascending = !this.ascending;
+  }
   movieTitleSort(list) {
     let sortOrder: string = this.ascending ? 'asc' : 'desc';
     list.movies = _.orderBy(list.movies, ['title'], [sortOrder]);
@@ -97,9 +106,31 @@ export class AppComponent implements OnInit {
   private sortMovieDesc(one, two): number {
     if(this.getMovieRatings().indexOf(one.rating) < this.getMovieRatings().indexOf(two.rating)) return 1;
     if(this.getMovieRatings().indexOf(one.rating) > this.getMovieRatings().indexOf(two.rating)) return -1;
-    
+
     if(one.title < two.title) return 1;
     if(one.title > two.title) return -1;
     return 0;
   }
+  private getShowRatings(): string[] {
+    return this.videoService.getShowRatings();
+  }
+
+  private sortShowAsc(one, two): number {
+    if(this.getShowRatings().indexOf(one.rating) < this.getShowRatings().indexOf(two.rating)) return -1;
+    if(this.getShowRatings().indexOf(one.rating) > this.getShowRatings().indexOf(two.rating)) return 1;
+
+    if(one.title < two.title) return -1;
+    if(one.title > two.title) return 1;
+    return 0;
+  }
+
+  private sortShowDesc(one, two): number {
+    if(this.getShowRatings().indexOf(one.rating) < this.getShowRatings().indexOf(two.rating)) return 1;
+    if(this.getShowRatings().indexOf(one.rating) > this.getShowRatings().indexOf(two.rating)) return -1;
+
+    if(one.title < two.title) return 1;
+    if(one.title > two.title) return -1;
+    return 0;
+  }
+
 }

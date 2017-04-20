@@ -25,10 +25,10 @@ ShowClient.get('/all', function(req, res) {
             let promise = new Promise((resolve, reject) => {
                 omdb.get(show.imdb_id, {tomatoes: true}, function (err, info) {
                     if (err) reject(err);
-                    show.rated = info.rated;
+                    show.rating = info.rated;
                     show.genres = info.genres;
                     show.plot = info.plot;
-                    show.rating = info.imdb.rating;
+                    show.rated = info.imdb.rating;
                     resolve();
                 });
             });

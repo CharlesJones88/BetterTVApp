@@ -45,7 +45,7 @@ export class VideoService {
                         .toPromise()
                         .then(response => response.json());
     }
-    
+
     getShowsBySource(source: string, limit: number, offset: number): Promise<Show[]> {
         return this.http.get(`http://localhost:8080/api/v1/shows/all?source=${source}&limit=${limit}&offset=${offset}`)
                         .toPromise()
@@ -68,5 +68,8 @@ export class VideoService {
 
     getMovieRatings() {
         return ["G", "PG", "PG-13", "R", "NR"];
+    }
+    getShowRatings(){
+      return ["TV-PG","TV-14","TV-MA","R","Unrated"];
     }
 }
