@@ -18,6 +18,9 @@ export class Movie {
     public poster_240x342: string;
     public poster_400x570: string;
     public alternate_titles: string[];
+    public plot: string;
+    public rated: number;
+    
     constructor() {}
 
     getSmallImage(): string {
