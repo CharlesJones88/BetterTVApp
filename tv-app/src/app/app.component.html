@@ -1,12 +1,16 @@
 <button style="float: right" ng-click="ratingSort()">Rating</button>
 <div *ngFor="let item of movieList">
-  <h1>{{item.source}}</h1>
+  <md-toolbar color="primary" class="padding-bottom">
+    <h1>{{item.source}}</h1>
+  </md-toolbar>
   <div class="inline-block padding-bottom" *ngFor="let movie of item.movies">
     <movie-detail [movie]="movie"></movie-detail>
   </div>
 </div>
 <div *ngFor="let item of showList">
-  <h1>{{item.source}}</h1>
+  <md-toolbar color="primary" class="padding-bottom">
+    <h1>{{item.source}}</h1>
+  </md-toolbar>
   <div class="inline-block" *ngFor="let show of item.shows">
     <show-detail [show]="show"></show-detail>
   </div>

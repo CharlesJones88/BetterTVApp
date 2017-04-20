@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { MdCardModule } from '@angular/material';
+import { MdCardModule, MdToolbarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import { AppComponent } from './app.component';
@@ -21,9 +21,13 @@ import { ShowDetailComponent } from './show-detail.component';
     HttpModule,
     MdCardModule,
     BrowserAnimationsModule,
+    MdToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent],
-  exports: [MdCardModule],
+  exports: [
+    MdCardModule,
+    MdToolbarModule
+  ],
 })
 export class AppModule { }
