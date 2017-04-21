@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
             if(this.movieList.find(category => category.genre === genre)) {
               this.movieList.find(category => category.genre === genre).movies 
                 = _.uniqBy(this.movieList.find(category => category.genre === genre).movies
-                                .concat(this.movies), 'title');
+                                .concat(moviesMatchingGenre), 'title');
             } else {
               this.movieList.push({genre: genre, movies: moviesMatchingGenre});
             }

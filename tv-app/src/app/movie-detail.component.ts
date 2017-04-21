@@ -13,4 +13,8 @@ export class MovieDetailComponent {
     getGenres(): string {
         return this.movie.genres.join(', ');
     }
+
+    openDialog() {
+        
+    }
 }
