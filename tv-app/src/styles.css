@@ -12,9 +12,18 @@ body {
 .left {
     float: left;
 }
+
+.right {
+    float: right;
+}
+
 .text {
     padding-left: 5px;
     padding-right: 5px;
     margin-top: 0;
     margin-bottom: 0;
+}
+
+.spacer {
+  flex: 1 1 auto;
 }

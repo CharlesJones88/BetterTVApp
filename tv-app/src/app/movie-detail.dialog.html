@@ -1,6 +1,10 @@
+<button class="right" md-button (click)="hideMovie()">Hide</button>
 <div>
     <img class="inline-block left" src="{{movie.getMediumImage()}}">
-    <h1 class="inline-block text">{{movie.title}}</h1>
-    <p class="inline-block text full-plot">{{movie.fullPlot}}</p>
+    <div class="inline-block dialog-text-width text">
+        <h1 class="title">{{movie.title}}</h1>
+        <div>Rating: {{movie.rating}} - Score: {{movie.rated}}</div>
+        <div>Genres: {{movie.genres.join(', ')}}</div>
+        <p>{{movie.fullPlot}}</p>
+    </div>
 </div>
-<button md-button tabindex="-1">Not Tabbable</button>
