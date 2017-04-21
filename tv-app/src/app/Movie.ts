@@ -19,6 +19,7 @@ export class Movie {
     public poster_400x570: string;
     public alternate_titles: string[];
     public plot: string;
+    public fullPlot: string;
     public rated: number;
     public genres: string[];
     

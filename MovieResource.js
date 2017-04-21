@@ -10,10 +10,19 @@ let Guidebox = require('guidebox')(apiKey);
 
 let MovieClient = express.Router();
 
+MovieClient.get('/movie', function(req, res) {
+    let id = req.query.id;
+    let fullPlot = req.query.fullPlot;
+    omdb.get(id, {fullPlot: fullPlot}, function(err, info) {
+        res.status(200).send(info);
+    });
+});
+
 MovieClient.get('/all', function(req, res) {
     let source = req.query.source;
     let limit = req.query.limit;
     let offset = req.query.offset;
+    let fullPlot = req.query.fullPlot;
     var params = {
         sources: source,
         limit: limit,
@@ -25,13 +34,17 @@ MovieClient.get('/all', function(req, res) {
         data.results.forEach(movie => {
             let promise = new Promise((resolve, reject) => {            
                 omdb.get(movie.imdb, {tomatoes: true}, function(err, info) {
-                    if(err) reject(err);
-                    movie.runtime = info.runtime;
-                    movie.plot = info.plot;
-                    movie.genres = info.genres;
-                    movie.rated = info.imdb.rating;
-                    movie.awards = info.awards;
-                    resolve();
+                    if(err) {
+                        console.log(`${err}`.red);
+                        reject(err);
+                    } else {
+                        movie.runtime = info.runtime;
+                        movie.plot = info.plot;
+                        movie.genres = info.genres;
+                        movie.rated = info.imdb.rating;
+                        movie.awards = info.awards;
+                        resolve();
+                    }
                 });
             });
             promiseArray.push(promise);

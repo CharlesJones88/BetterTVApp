@@ -34,6 +34,17 @@ export class VideoService {
                         });
     }
 
+    getMovie(id: string, fullPlot: boolean): Promise<Movie> {
+        return this.http.get(`http://localhost:8080/api/v1/movies/movie?id=${id}&fullPlot=${fullPlot}`)
+                        .toPromise()
+                        .then(response => {
+                            let res = response.json();
+                            let movie = new Movie();
+                            Object.assign(movie, res);
+                            return movie;
+                        });
+    }
+
     getMovies(limit: number, offset: number): Promise<Movie[]> {
         return this.http.get(`http://localhost:8080/api/v1/movies/all?limit=${limit}&offset=${offset}`)
                         .toPromise()
