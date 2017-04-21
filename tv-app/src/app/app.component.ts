@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   private ascending: boolean = true;
   public movies: Movie[] = [];
   public movieList = [];
+  public movieGenres: string[] = [];
   public showList = [];
   public shows: Show[] = [];
   private movieLimit: number = 20;
@@ -33,9 +34,19 @@ export class AppComponent implements OnInit {
       _.each(sources, source => {
         this.videoService.getMoviesBySource(source.type, this.movieLimit, this.movieOffset)
         .then(value => {
-          this.movies = value;
-          this.movieList.push({source: source.display_name, movies: this.movies});
-          this.movieList = _.sortBy(this.movieList, ['source']);
+          this.movies = value.movies;
+          this.movieGenres = value.genres;
+          _.each(this.movieGenres, (genre) => {
+            let moviesMatchingGenre = this.movies.filter(movie => movie.genres.indexOf(genre) !== -1);
+            if(this.movieList.find(category => category.genre === genre)) {
+              this.movieList.find(category => category.genre === genre).movies 
+                = _.uniqBy(this.movieList.find(category => category.genre === genre).movies
+                                .concat(this.movies), 'title');
+            } else {
+              this.movieList.push({genre: genre, movies: moviesMatchingGenre});
+            }
+          });
+          this.movieList = _.sortBy(this.movieList, ['genre']);
         });
       });
       this.movieOffset += this.movieLimit;

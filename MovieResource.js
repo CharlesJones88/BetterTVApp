@@ -1,6 +1,7 @@
 let express = require('express');
 let nconf = require('nconf');
 let omdb = require('omdb');
+let _ = require('lodash');
 nconf.file({file:'config.json'});
 
 const apiKey = nconf.get('apiKey');
@@ -36,7 +37,8 @@ MovieClient.get('/all', function(req, res) {
             promiseArray.push(promise);
         });
         Promise.all(promiseArray).then(function() {
-            res.status(200).send(data.results);
+            let genres = _.uniq(_.flatten(_.map(data.results, (movie) => movie.genres)));
+            res.status(200).send({genres: genres, movies: data.results});
         });
     })
     .catch(function (e) {

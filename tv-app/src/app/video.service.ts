@@ -20,17 +20,17 @@ export class VideoService {
                         .then(response => response.json());
     }
 
-    getMoviesBySource(source: string, limit: number, offset: number): Promise<Movie[]> {
+    getMoviesBySource(source: string, limit: number, offset: number): Promise<any> {
         return this.http.get(`http://localhost:8080/api/v1/movies/all?source=${source}&limit=${limit}&offset=${offset}`)
                         .toPromise()
                         .then(response => {
                             let res = response.json();
-                            let movies = _.map(res, movie => {
+                            res.movies = _.map(res.movies, movie => {
                                 let mov = new Movie();
                                 Object.assign(mov, movie);
                                 return mov;
                             });
-                            return movies;
+                            return res;
                         });
     }
 
