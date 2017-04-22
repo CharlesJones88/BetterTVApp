@@ -1,25 +1,33 @@
-<div *ngFor="let item of movieList">
-  <md-toolbar color="accent" class="padding-bottom">
-    <h1>{{item.genre}}</h1>
-    <span class="spacer"></span>
-    <button md-button (click)="movieTitleSort(item)">Title</button>
-    <button md-button (click)="movieRatingSort(item)">Rating</button>
-    <button md-button (click)="movieScoreSort(item)">Score</button>
-  </md-toolbar>
-  <div class="inline-block padding-bottom" *ngFor="let movie of item.movies">
-    <movie-detail [movie]="movie" [openDialog]="openDialog" [movieList]="movieList"></movie-detail>
-  </div>
+<div *ngIf="loading">
+  <div class="loader" tabindex="-1">
+      <div>
+      </div>
+    </div>
 </div>
-<div *ngFor="let item of showList">
-  <md-toolbar color="accent" class="padding-bottom">
-    <h1>{{item.source}}</h1>
-    <span class="spacer"></span>
-    <span class="spacer"></span>
-    <button md-button (click)="showTitleSort(item)">Title</button>
-    <button md-button (click)="showRatingSort(item)">Rating</button>
-    <button md-button (click)="showScoreSort(item)">Score</button>
-  </md-toolbar>
-  <div class="inline-block" *ngFor="let show of item.shows">
-    <show-detail [show]="show"></show-detail>
+<div *ngIf="!loading">
+  <div *ngFor="let item of movieList">
+    <md-toolbar color="accent" class="padding-bottom">
+      <h1>{{item.genre}}</h1>
+      <span class="spacer"></span>
+      <button md-button (click)="movieTitleSort(item)">Title</button>
+      <button md-button (click)="movieRatingSort(item)">Rating</button>
+      <button md-button (click)="movieScoreSort(item)">Score</button>
+    </md-toolbar>
+    <div class="inline-block padding-bottom" *ngFor="let movie of item.movies">
+      <movie-detail [movie]="movie" [openDialog]="openDialog" [movieList]="movieList"></movie-detail>
+    </div>
+  </div>
+  <div *ngFor="let item of showList">
+    <md-toolbar color="accent" class="padding-bottom">
+      <h1>{{item.source}}</h1>
+      <span class="spacer"></span>
+      <span class="spacer"></span>
+      <button md-button (click)="showTitleSort(item)">Title</button>
+      <button md-button (click)="showRatingSort(item)">Rating</button>
+      <button md-button (click)="showScoreSort(item)">Score</button>
+    </md-toolbar>
+    <div class="inline-block" *ngFor="let show of item.shows">
+      <show-detail [show]="show"></show-detail>
+    </div>
   </div>
 </div>

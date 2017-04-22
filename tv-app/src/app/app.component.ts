@@ -15,6 +15,7 @@ import * as _ from 'lodash';
   providers: [VideoService]
 })
 export class AppComponent implements OnInit {
+  public loading: boolean;
   private ascending: boolean = true;
   public movies: Movie[] = [];
   public movieList = [];
@@ -28,53 +29,76 @@ export class AppComponent implements OnInit {
   constructor(public dialog: MdDialog, private videoService: VideoService) {}
 
   ngOnInit(): void {
-    this.videoService.getMoviesSources().then(value => {
-      let sources: Source[] = _.uniqBy(_.map(value, val => {
-        let source = new Source();
-        Object.assign(source, {display_name: val.display_name, type: val.type});
-        return source;
-      }), 'type');
-      _.each(sources, source => {
-        this.videoService.getMoviesBySource(source.type, this.movieLimit, this.movieOffset)
-        .then(value => {
-          this.movies = value.movies;
-          this.movieGenres = value.genres;
-          _.each(this.movieGenres, (genre) => {
-            let moviesMatchingGenre = this.movies.filter(movie => movie.genres.indexOf(genre) !== -1);
-            if(localStorage.getItem('hidden-movies')) {
-                let hiddenMovies = JSON.parse(localStorage.getItem('hidden-movies'));
-                _.each(hiddenMovies, (hidden) => {
-                  moviesMatchingGenre = _.reject(moviesMatchingGenre, (movie) => movie.imdb === hidden);
-                });
-              }
-            if(this.movieList.find(category => category.genre === genre)) {
-              this.movieList.find(category => category.genre === genre).movies 
-                = _.uniqBy(this.movieList.find(category => category.genre === genre).movies
-                                .concat(moviesMatchingGenre), 'title');
-            } else {
-              this.movieList.push({genre: genre, movies: moviesMatchingGenre});
-            }
+    this.loading = true;
+    let moviePromises = [];
+    let showPromises = [];
+    let movieSourcePromise = new Promise((resolveSource, rejectSource) => {
+      this.videoService.getMoviesSources().then(value => {
+        let sources: Source[] = _.uniqBy(_.map(value, val => {
+          let source = new Source();
+          Object.assign(source, {display_name: val.display_name, type: val.type});
+          return source;
+        }), 'type');
+        _.each(sources, source => {
+          let moviePromise = new Promise((resolve, reject) => {
+            this.videoService.getMoviesBySource(source.type, this.movieLimit, this.movieOffset).then(value => {
+              this.movies = value.movies;
+              this.movieGenres = value.genres;
+              _.each(this.movieGenres, (genre) => {
+                let moviesMatchingGenre = this.movies.filter(movie => movie.genres.indexOf(genre) !== -1);
+                if(localStorage.getItem('hidden-movies')) {
+                  let hiddenMovies = JSON.parse(localStorage.getItem('hidden-movies'));
+                  _.each(hiddenMovies, (hidden) => {
+                    moviesMatchingGenre = _.reject(moviesMatchingGenre, (movie) => movie.imdb === hidden);
+                  });
+                }
+                if(this.movieList.find(category => category.genre === genre)) {
+                  this.movieList.find(category => category.genre === genre).movies 
+                    = _.uniqBy(this.movieList.find(category => category.genre === genre).movies
+                      .concat(moviesMatchingGenre), 'title');
+                } else {
+                  this.movieList.push({genre: genre, movies: moviesMatchingGenre});
+                }
+              });
+              this.movieList = _.sortBy(this.movieList, ['genre']);
+              resolve();
+            });
           });
-          this.movieList = _.sortBy(this.movieList, ['genre']);
+          
+          moviePromises.push(moviePromise);
+          resolveSource();
         });
+        this.movieOffset += this.movieLimit;
       });
-      this.movieOffset += this.movieLimit;
     });
-    this.videoService.getShowSources().then(value => {
-      let sources: Source[] = _.uniqBy(_.map(value, val => {
-        let source = new Source();
-        Object.assign(source, {display_name: val.display_name, type: val.type});
-        return source;
-      }), 'type');
-      _.each(sources, source => {
-        this.videoService.getShowsBySource(source.type, this.showLimit, this.showOffset)
-        .then(value => {
-          this.shows = value;
-          this.showList.push({source: source.display_name, shows: this.shows});
-          this.showList = _.sortBy(this.showList, ['source']);
+    moviePromises.push(movieSourcePromise);
+    let showSourcePromise = new Promise((resolveSource, rejectSource) => {
+      this.videoService.getShowSources().then(value => {
+        let sources: Source[] = _.uniqBy(_.map(value, val => {
+          let source = new Source();
+          Object.assign(source, {display_name: val.display_name, type: val.type});
+          return source;
+        }), 'type');
+        _.each(sources, source => {
+          let showPromise = new Promise((resolve, reject) => {
+            this.videoService.getShowsBySource(source.type, this.showLimit, this.showOffset)
+            .then(value => {
+              this.shows = value;
+              this.showList.push({source: source.display_name, shows: this.shows});
+              this.showList = _.sortBy(this.showList, ['source']);
+              resolve();
+            });
+          });
+          showPromises.push(showPromise);
+          resolveSource();
         });
+        this.showOffset += this.showLimit;
       });
-      this.showOffset += this.showLimit;
+      
+    });
+    moviePromises.push(showSourcePromise);
+    Promise.all(moviePromises.concat(showPromises)).then(() => {
+      this.loading = false;
     });
   }
 
