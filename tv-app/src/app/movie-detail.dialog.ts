@@ -18,7 +18,7 @@ import { Movie } from './Movie';
 })
 export class MovieDetailDialog {
     public movie: Movie
-
+    constructor(public dialogRef: MdDialogRef<MovieDetailDialog>) {}
     hideMovie() {
         let hiddenMovies = [];
         if(localStorage.getItem('hidden-movies')) {
@@ -26,5 +26,6 @@ export class MovieDetailDialog {
         }
         hiddenMovies.push(this.movie.imdb);
         localStorage.setItem('hidden-movies', JSON.stringify(hiddenMovies));
+        this.dialogRef.close(this.movie);
     }
 }

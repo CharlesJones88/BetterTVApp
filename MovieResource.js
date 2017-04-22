@@ -52,6 +52,8 @@ MovieClient.get('/all', function(req, res) {
         Promise.all(promiseArray).then(function() {
             let genres = _.uniq(_.flatten(_.map(data.results, (movie) => movie.genres)));
             res.status(200).send({genres: genres, movies: data.results});
+        }, function(err) {
+            res.status(500).send(`${e._response.body.error}`.red);
         });
     })
     .catch(function (e) {

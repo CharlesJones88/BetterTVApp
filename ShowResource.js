@@ -24,18 +24,24 @@ ShowClient.get('/all', function(req, res) {
         data.results.forEach(show => {
             let promise = new Promise((resolve, reject) => {
                 omdb.get(show.imdb_id, {tomatoes: true}, function (err, info) {
-                    if (err) reject(err);
-                    show.rating = info.rated;
-                    show.genres = info.genres;
-                    show.plot = info.plot;
-                    show.rated = info.imdb.rating;
-                    resolve();
+                    if (err) {
+                        console.log(`${err}`.red);
+                        reject(err);
+                    } else {
+                        show.rating = info.rated;
+                        show.genres = info.genres;
+                        show.plot = info.plot;
+                        show.rated = info.imdb.rating;
+                        resolve();
+                    }
                 });
             });
             promiseArray.push(promise);
         });
         Promise.all(promiseArray).then(function () {
             res.status(200).send(data.results);
+        }, function(err) {
+            res.status(500).send(`${e._response.body.error}`.red);
         });
     })
     .catch(function (e) {

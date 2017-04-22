@@ -1,5 +1,5 @@
 <md-card class="movie-cards">
-  <div class="movie-select" (click)="openDialog()">
+  <div class="movie-select" (click)="openDialog(movie)">
       <img src="{{movie.getMediumImage()}}">
     <md-card-content class="content">
       <div class="text"><span class="bold">{{movie.title}}</span><span> - Genre: {{getGenres()}}</span></div>

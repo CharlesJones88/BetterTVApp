@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MdDialog } from '@angular/material';
+
+import { MovieDetailDialog } from './movie-detail.dialog';
 import { VideoService } from './video.service';
 import { Movie } from './Movie';
 import { Show } from './Show';
@@ -22,7 +25,7 @@ export class AppComponent implements OnInit {
   private movieOffset: number = 0;
   private showLimit: number = 20;
   private showOffset: number = 0;
-  constructor(private videoService: VideoService) {}
+  constructor(public dialog: MdDialog, private videoService: VideoService) {}
 
   ngOnInit(): void {
     this.videoService.getMoviesSources().then(value => {
@@ -38,6 +41,12 @@ export class AppComponent implements OnInit {
           this.movieGenres = value.genres;
           _.each(this.movieGenres, (genre) => {
             let moviesMatchingGenre = this.movies.filter(movie => movie.genres.indexOf(genre) !== -1);
+            if(localStorage.getItem('hidden-movies')) {
+                let hiddenMovies = JSON.parse(localStorage.getItem('hidden-movies'));
+                _.each(hiddenMovies, (hidden) => {
+                  moviesMatchingGenre = _.reject(moviesMatchingGenre, (movie) => movie.imdb === hidden);
+                });
+              }
             if(this.movieList.find(category => category.genre === genre)) {
               this.movieList.find(category => category.genre === genre).movies 
                 = _.uniqBy(this.movieList.find(category => category.genre === genre).movies
@@ -66,6 +75,20 @@ export class AppComponent implements OnInit {
         });
       });
       this.showOffset += this.showLimit;
+    });
+  }
+
+  openDialog(movie) {
+    this.videoService.getMovie(movie.imdb, true).then(value => {
+      let dialogRef = this.dialog.open(MovieDetailDialog);
+      movie.fullPlot = value.plot;
+      dialogRef.componentInstance.movie = movie;
+      dialogRef.afterClosed().subscribe(result => {
+        _.each(this.movieList, item => {
+          let index = _.findIndex(item.movies, (movie: Movie) => movie.id === result.id);
+          item.movies.splice(index, 1);
+        });
+      });
     });
   }
 
