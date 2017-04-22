@@ -30,8 +30,27 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
+    Promise.all(this.getMoviesByGenre().concat(this.getShowsByGenre())).then(() => {
+      this.loading = false;
+    });
+  }
+
+  openDialog(movie) {
+    this.videoService.getMovie(movie.imdb, true).then(value => {
+      let dialogRef = this.dialog.open(MovieDetailDialog);
+      movie.fullPlot = value.plot;
+      dialogRef.componentInstance.movie = movie;
+      dialogRef.afterClosed().subscribe(result => {
+        _.each(this.movieList, item => {
+          let index = _.findIndex(item.movies, (movie: Movie) => movie.id === result.id);
+          item.movies.splice(index, 1);
+        });
+      });
+    });
+  }
+
+  private getMoviesByGenre(): Promise<any>[] {
     let moviePromises = [];
-    let showPromises = [];
     let movieSourcePromise = new Promise((resolveSource, rejectSource) => {
       this.videoService.getMoviesSources().then(value => {
         let sources: Source[] = _.uniqBy(_.map(value, val => {
@@ -72,6 +91,11 @@ export class AppComponent implements OnInit {
       });
     });
     moviePromises.push(movieSourcePromise);
+    return moviePromises;
+  }
+
+  private getShowsByGenre(): Promise<any>[] {
+    let showPromises = [];
     let showSourcePromise = new Promise((resolveSource, rejectSource) => {
       this.videoService.getShowSources().then(value => {
         let sources: Source[] = _.uniqBy(_.map(value, val => {
@@ -94,26 +118,9 @@ export class AppComponent implements OnInit {
         });
         this.showOffset += this.showLimit;
       });
-      
     });
-    moviePromises.push(showSourcePromise);
-    Promise.all(moviePromises.concat(showPromises)).then(() => {
-      this.loading = false;
-    });
-  }
-
-  openDialog(movie) {
-    this.videoService.getMovie(movie.imdb, true).then(value => {
-      let dialogRef = this.dialog.open(MovieDetailDialog);
-      movie.fullPlot = value.plot;
-      dialogRef.componentInstance.movie = movie;
-      dialogRef.afterClosed().subscribe(result => {
-        _.each(this.movieList, item => {
-          let index = _.findIndex(item.movies, (movie: Movie) => movie.id === result.id);
-          item.movies.splice(index, 1);
-        });
-      });
-    });
+    showPromises.push(showSourcePromise);
+    return showPromises;
   }
 
   showTitleSort(list) {
