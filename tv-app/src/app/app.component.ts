@@ -19,13 +19,16 @@ export class AppComponent implements OnInit {
   private ascending: boolean = true;
   public movies: Movie[] = [];
   public movieList = [];
+  public filteredMovieList = [];
   public movieGenres: string[] = [];
-  public showList = [];
   public shows: Show[] = [];
+  public showList = [];
+  public filteredShowList = [];
   private movieLimit: number = 20;
   private movieOffset: number = 0;
   private showLimit: number = 20;
   private showOffset: number = 0;
+  public selectedRatings;
   constructor(public dialog: MdDialog, private videoService: VideoService) {}
 
   ngOnInit(): void {
@@ -41,7 +44,7 @@ export class AppComponent implements OnInit {
       movie.fullPlot = value.plot;
       dialogRef.componentInstance.movie = movie;
       dialogRef.afterClosed().subscribe(result => {
-        _.each(this.movieList, item => {
+        _.each(this.filteredMovieList, item => {
           let index = _.findIndex(item.movies, (movie: Movie) => movie.id === result.id);
           item.movies.splice(index, 1);
         });
@@ -80,12 +83,12 @@ export class AppComponent implements OnInit {
                 }
               });
               this.movieList = _.sortBy(this.movieList, ['genre']);
+              this.filteredMovieList = _.cloneDeep(this.movieList);
               resolve();
+              resolveSource();
             });
           });
-          
           moviePromises.push(moviePromise);
-          resolveSource();
         });
         this.movieOffset += this.movieLimit;
       });
@@ -111,10 +114,10 @@ export class AppComponent implements OnInit {
               this.showList.push({source: source.display_name, shows: this.shows});
               this.showList = _.sortBy(this.showList, ['source']);
               resolve();
+              resolveSource();
             });
           });
           showPromises.push(showPromise);
-          resolveSource();
         });
         this.showOffset += this.showLimit;
       });
@@ -128,6 +131,7 @@ export class AppComponent implements OnInit {
     list.shows = _.orderBy(list.shows, ['title'], [sortOrder]);
     this.ascending = !this.ascending;
   }
+
   showRatingSort(list) {
     list.shows.sort((one, two) => this.ascending ? this.sortShowAsc(one, two) : this.sortShowDesc(one, two));
     this.ascending = !this.ascending;
@@ -138,6 +142,7 @@ export class AppComponent implements OnInit {
     list.shows = _.orderBy(list.shows, ['rated'], [sortOrder]);
     this.ascending = !this.ascending;
   }
+
   movieTitleSort(list) {
     let sortOrder: string = this.ascending ? 'asc' : 'desc';
     list.movies = _.orderBy(list.movies, ['title'], [sortOrder]);
@@ -155,7 +160,7 @@ export class AppComponent implements OnInit {
     this.ascending = !this.ascending;
   }
 
-  private getMovieRatings(): string[] {
+  getMovieRatings(): string[] {
     return this.videoService.getMovieRatings();
   }
 
@@ -176,6 +181,7 @@ export class AppComponent implements OnInit {
     if(one.title > two.title) return -1;
     return 0;
   }
+
   private getShowRatings(): string[] {
     return this.videoService.getShowRatings();
   }
@@ -198,4 +204,11 @@ export class AppComponent implements OnInit {
     return 0;
   }
 
+  filterMovieRatings(item, index) {
+    item.movies = _.cloneDeep(this.movieList[index].movies);
+    if(this.selectedRatings.length > 0) {
+      item.movies = _.filter(item.movies, (movie: Movie) => 
+        this.selectedRatings.indexOf(movie.rating) !== -1);
+    }
+  }
 }
