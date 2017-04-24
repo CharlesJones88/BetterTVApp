@@ -48,6 +48,7 @@ export class AppComponent implements OnInit {
           let index = _.findIndex(item.movies, (movie: Movie) => movie.id === result.id);
           item.movies.splice(index, 1);
         });
+        this.movieList = this.filteredMovieList;
       });
     });
   }

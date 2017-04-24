@@ -11,6 +11,7 @@ import { MovieDetailDialog } from './movie-detail.dialog';
 })
 export class MovieDetailComponent {
     @Input() movieList;
+    @Input() filteredMovieList;
     @Input() movie: Movie;
     @Input() openDialog: Function;
     

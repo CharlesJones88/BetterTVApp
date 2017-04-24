@@ -1,7 +1,7 @@
 <button class="right" md-button (click)="hideMovie()">Hide</button>
 <div>
     <img class="inline-block left" src="{{movie.getMediumImage()}}">
-    <div class="inline-block dialog-text-width text">
+    <div class="inline dialog-text-width text">
         <h1 class="title">{{movie.title}}</h1>
         <div>Rating: {{movie.rating}} - Score: {{movie.rated}}</div>
         <div>Genres: {{movie.genres.join(', ')}}</div>

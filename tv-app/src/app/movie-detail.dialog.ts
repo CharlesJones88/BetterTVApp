@@ -22,7 +22,7 @@ export class MovieDetailDialog {
     hideMovie() {
         let hiddenMovies = [];
         if(localStorage.getItem('hidden-movies')) {
-            let hiddenMovies = JSON.parse(localStorage.getItem('hidden-movies'));
+            hiddenMovies = JSON.parse(localStorage.getItem('hidden-movies'));
         }
         hiddenMovies.push(this.movie.imdb);
         localStorage.setItem('hidden-movies', JSON.stringify(hiddenMovies));
