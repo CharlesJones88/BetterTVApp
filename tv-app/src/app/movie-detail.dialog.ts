@@ -13,6 +13,9 @@ import { Movie } from './Movie';
         `.title {
             margin-top: 0;
             margin-bottom: 0;
+        }`,
+        `.img-space {
+            margin-right: 5px;
         }`
     ]
 })

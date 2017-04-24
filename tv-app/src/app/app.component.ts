@@ -44,11 +44,13 @@ export class AppComponent implements OnInit {
       movie.fullPlot = value.plot;
       dialogRef.componentInstance.movie = movie;
       dialogRef.afterClosed().subscribe(result => {
-        _.each(this.filteredMovieList, item => {
-          let index = _.findIndex(item.movies, (movie: Movie) => movie.id === result.id);
-          item.movies.splice(index, 1);
-        });
-        this.movieList = this.filteredMovieList;
+        if(result) {
+          _.each(this.filteredMovieList, item => {
+            let index = _.findIndex(item.movies, (movie: Movie) => movie.id === result.id);
+            item.movies.splice(index, 1);
+          });
+          this.movieList = this.filteredMovieList;
+        }
       });
     });
   }
