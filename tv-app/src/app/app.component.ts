@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
   private movieOffset: number = 0;
   private showLimit: number = 20;
   private showOffset: number = 0;
-  public selectedRatings;
+  public selectedRatings = [];
   constructor(public dialog: MdDialog, private videoService: VideoService) {}
 
   ngOnInit(): void {
@@ -209,9 +209,9 @@ export class AppComponent implements OnInit {
 
   filterMovieRatings(item, index) {
     item.movies = _.cloneDeep(this.movieList[index].movies);
-    if(this.selectedRatings.length > 0) {
+    if(this.selectedRatings[index].length > 0) {
       item.movies = _.filter(item.movies, (movie: Movie) => 
-        this.selectedRatings.indexOf(movie.rating) !== -1);
+        this.selectedRatings[index].indexOf(movie.rating) !== -1);
     }
   }
 }
