@@ -1,5 +1,6 @@
 let express = require('express');
 let app = express();
+//TODO: Tell them to get their own api key for guidebox and how to pass it in.
 const nconf = require('nconf');
 nconf.env()
 .argv()
