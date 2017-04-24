@@ -15,13 +15,13 @@ export class VideoService {
     }
 
     getMoviesSources(): Promise<Source[]> {
-        return this.http.get(`http://localhost:8080/api/v1/movies/sources`)
+        return this.http.get(`/api/v1/movies/sources`)
                         .toPromise()
                         .then(response => response.json());
     }
 
     getMoviesBySource(source: string, limit: number, offset: number): Promise<any> {
-        return this.http.get(`http://localhost:8080/api/v1/movies/all?source=${source}&limit=${limit}&offset=${offset}`)
+        return this.http.get(`/api/v1/movies/all?source=${source}&limit=${limit}&offset=${offset}`)
                         .toPromise()
                         .then(response => {
                             let res = response.json();
@@ -35,7 +35,7 @@ export class VideoService {
     }
 
     getMovie(id: string, fullPlot: boolean): Promise<Movie> {
-        return this.http.get(`http://localhost:8080/api/v1/movies/movie?id=${id}&fullPlot=${fullPlot}`)
+        return this.http.get(`/api/v1/movies/movie?id=${id}&fullPlot=${fullPlot}`)
                         .toPromise()
                         .then(response => {
                             let res = response.json();
@@ -46,19 +46,19 @@ export class VideoService {
     }
 
     getMovies(limit: number, offset: number): Promise<Movie[]> {
-        return this.http.get(`http://localhost:8080/api/v1/movies/all?limit=${limit}&offset=${offset}`)
+        return this.http.get(`/api/v1/movies/all?limit=${limit}&offset=${offset}`)
                         .toPromise()
                         .then(response => response.json());
     }
 
     getShowSources(): Promise<Source[]> {
-        return this.http.get(`http://localhost:8080/api/v1/shows/sources`)
+        return this.http.get(`/api/v1/shows/sources`)
                         .toPromise()
                         .then(response => response.json());
     }
 
     getShowsBySource(source: string, limit: number, offset: number): Promise<Show[]> {
-        return this.http.get(`http://localhost:8080/api/v1/shows/all?source=${source}&limit=${limit}&offset=${offset}`)
+        return this.http.get(`/api/v1/shows/all?source=${source}&limit=${limit}&offset=${offset}`)
                         .toPromise()
                         .then(response => {
                             let res = response.json();
@@ -72,7 +72,7 @@ export class VideoService {
     }
 
     getShows(limit: number, offset: number) {
-        return this.http.get(`http://localhost:8080/api/v1/shows/all?limit=${limit}&offset=${offset}`)
+        return this.http.get(`/api/v1/shows/all?limit=${limit}&offset=${offset}`)
                         .toPromise()
                         .then(response => response.json());
     }

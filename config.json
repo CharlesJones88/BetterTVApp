@@ -1,3 +1,6 @@
 {
-    "apiKey": "5010b3240eeea1cf1b3225cf850e703af6b33148"
+    "IP": "127.0.0.1",
+    "PORT": "8080",
+    "apiKey": "5010b3240eeea1cf1b3225cf850e703af6b33148",
+    "path": "tv-app/dist"
 }
