@@ -90,7 +90,7 @@ export class VideoService {
         return ["G", "PG", "PG-13", "R", "NR"];
     }
     getShowRatings() {
-      return ["TV-PG","TV-14","TV-MA","R","Unrated"];
+      return ["TV-PG", "TV-14", "TV-MA", "R", ''];
     }
 }
 
