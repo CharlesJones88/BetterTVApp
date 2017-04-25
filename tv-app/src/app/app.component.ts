@@ -31,6 +31,7 @@ export class AppComponent implements OnInit {
   private showLimit: number = 20;
   private showOffset: number = 0;
   public selectedRatings = [];
+  public selectedShowRatings = [];
   constructor(public dialog: MdDialog, private videoService: VideoService) {}
 
   ngOnInit(): void {
@@ -255,15 +256,20 @@ export class AppComponent implements OnInit {
   }
 
   filterShowRatings(item, index: number) {
-    item.show = _.cloneDeep(this.showList[index].show);
-    if(this.selectedRatings[index].length > 0) {
+    item.shows = _.cloneDeep(this.showList[index].shows);
+    if(this.selectedShowRatings[index].length > 0) {
       item.shows = _.filter(item.shows, (show: Show) =>
-      this.selectedRatings[index].indexOf(show.rating) !== -1);
+      this.selectedShowRatings[index].indexOf(show.rating) !== -1);
     }
   }
 
   searchMovies($event, item, index: number) {
     item.movies = _.cloneDeep(this.movieList[index].movies);
     item.movies = _.filter(item.movies, (movie: Movie) => movie.title.toLowerCase().includes($event.target.value));
+  }
+
+  searchShows($event, item, index: number) {
+    item.shows = _.cloneDeep(this.showList[index].shows);
+    item.shows = _.filter(item.shows, (show: Show) => show.title.toLowerCase().includes($event.target.value));
   }
 }

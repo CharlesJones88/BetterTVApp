@@ -38,7 +38,11 @@ ShowClient.get('/all', function(req, res) {
                         console.log(`${err}`.red);
                         reject(err);
                     } else {
-                        show.rating = info.rated;
+                        if(info.rated){
+                            show.rating = info.rated;
+                        }else{
+                            show.rating = "Unrated";
+                        }
                         show.genres = info.genres;
                         show.plot = info.plot;
                         show.rated = info.imdb.rating;

@@ -33,7 +33,10 @@
       <md-toolbar-row>
         <span class="spacer"></span>
         <h3 class="filter-title">Filters:</h3>
-        <md-select multiple="true" placeholder="Ratings" [(ngModel)]="selectedRatings[i]">
+        <md-input-container>
+          <input mdInput placeholder="Search" (keyup)="searchShows($event, item, i)">
+        </md-input-container>
+        <md-select multiple="true" placeholder="Ratings" [(ngModel)]="selectedShowRatings[i]">
           <md-option *ngFor="let rating of getShowRatings()" (click)="filterShowRatings(item, i)" [value]="rating">{{rating}}</md-option>
         </md-select>
       </md-toolbar-row>
