@@ -14,7 +14,7 @@ export class MovieDetailComponent {
     @Input() filteredMovieList;
     @Input() movie: Movie;
     @Input() openDialog: Function;
-    
+
     constructor(public dialog: MdDialog, private videoService: VideoService) {}
     getGenres(): string {
         return this.movie.genres.join(', ');

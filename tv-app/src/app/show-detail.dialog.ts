@@ -20,7 +20,7 @@ import { Show } from './Show';
   ]
 })
 export class ShowDetailDialog {
-  public show: Show
+  public show: Show;
   constructor(public dialogRef: MdDialogRef<ShowDetailDialog>) {}
   hideShow() {
     let hiddenShows = [];

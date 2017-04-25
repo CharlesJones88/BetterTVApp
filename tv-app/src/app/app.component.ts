@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MdDialog } from '@angular/material';
 
 import { MovieDetailDialog } from './movie-detail.dialog';
+import { ShowDetailDialog } from './show-detail.dialog';
 import { VideoService } from './video.service';
 import { Movie } from './Movie';
 import { Show } from './Show';
@@ -57,7 +58,20 @@ export class AppComponent implements OnInit {
   }
 
   openShowDialog(show) {
-
+    this.videoService.getShow(show.imdb_id, true).then(value => {
+      let dialogRef = this.dialog.open(ShowDetailDialog);
+      show.fullPlot = value.plot;
+      dialogRef.componentInstance.show = show;
+      dialogRef.afterClosed().subscribe(result => {
+        if(result) {
+          _.each(this.filteredShowList, item => {
+            let index = _.findIndex(item.shows, (show: Show) => show.id === result.id);
+            item.shows.splice(index, 1);
+          });
+          this.showList = this.filteredShowList;
+        }
+      });
+    });
   }
 
   private getMoviesByGenre(): Promise<any>[] {
@@ -242,7 +256,7 @@ export class AppComponent implements OnInit {
 
 
   filterShowRatings(item, index) {
-    item.show = _.cloneDeep(this.showList[index].show);
+    item.shows = _.cloneDeep(this.showList[index].shows);
     if(this.selectedRatings[index].length > 0) {
       item.shows = _.filter(item.shows, (show: Show) =>
       this.selectedRatings[index].indexOf(show.rating) !== -1);
