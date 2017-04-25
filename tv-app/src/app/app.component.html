@@ -16,7 +16,7 @@
       </md-toolbar-row>
     </md-toolbar>
     <div class="inline-block padding-bottom" *ngFor="let movie of item.movies">
-      <movie-detail [movie]="movie" [openDialog]="openDialog" [movieList]="movieList" [filteredMovieList]="filteredMovieList"></movie-detail>
+      <movie-detail [movie]="movie" [openDialog]="openMovieDialog" [movieList]="movieList" [filteredMovieList]="filteredMovieList"></movie-detail>
     </div>
   </div>
   <div *ngFor="let item of showList">

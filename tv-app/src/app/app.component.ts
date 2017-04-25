@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  openDialog(movie) {
+  openMovieDialog(movie) {
     this.videoService.getMovie(movie.imdb, true).then(value => {
       let dialogRef = this.dialog.open(MovieDetailDialog);
       movie.fullPlot = value.plot;
