@@ -53,7 +53,7 @@ MovieClient.get('/all', function(req, res) {
             let genres = _.uniq(_.flatten(_.map(data.results, (movie) => movie.genres)));
             res.status(200).send({genres: genres, movies: data.results});
         }, function(err) {
-            res.status(500).send(`${e._response.body.error}`.red);
+            res.status(500).send(`${err}`.red);
         });
     })
     .catch(function (e) {
