@@ -1,0 +1,10 @@
+<button class="right" md-button (click)="hideShow()">Hide</button>
+<div>
+  <img class="inline-block left img-space" src="{{show.getMediumImage()}}">
+  <div class="inline dialog-text-width text">
+    <h1 class="title">{{show.title}}</h1>
+    <div>Rating: {{show.rating}} - Score: {{show.rated}}</div>
+    <div>Genres: {{show.genres.join(', ')}}</div>
+    <p>{{show.fullPlot}}</p>
+  </div>
+</div>

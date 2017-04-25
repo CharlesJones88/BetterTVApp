@@ -31,3 +31,6 @@ img {
   height: 50px;
   overflow: hidden;
 }
+.show-select {
+  cursor: pointer;
+}

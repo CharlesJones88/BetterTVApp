@@ -17,6 +17,7 @@ export class Show {
     public rated: number;
     public genres: string[];
     public rating: string;
+    public fullPlot: string;
     constructor() {}
 
     getSmallImage(): string {

@@ -1,9 +1,9 @@
 <md-card class="show-cards">
-  <div>
+  <div class="show-select" (click)="openDialog(show)">
       <img src="{{show.getMediumImage()}}">
     <md-card-content class="content">
       <div class="text"><span class="bold">{{show.title}}</span><span> - Genre: {{getGenres()}}</span></div>
-      <span class="text"> Socre: {{show.rated}} Rated: {{show.rating}}</span>
+      <span class="text"> Score: {{show.rated}} Rated: {{show.rating}}</span>
       <p class="text plot">{{show.plot}}</p>
     </md-card-content>
   </div>

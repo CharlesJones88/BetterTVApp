@@ -1,6 +1,7 @@
 let express = require('express');
 let nconf = require('nconf');
 let omdb = require('omdb');
+let _ = require('lodash');
 nconf.file({file:'config.json'});
 
 const apiKey = nconf.get('apiKey');
@@ -9,10 +10,19 @@ let Guidebox = require('guidebox')(apiKey);
 
 let ShowClient = express.Router();
 
+ShowClient.get('/show', function(req, res){
+    let id = req.query.id;
+    let fullPlot = req.query.fullPlot;
+    omdb.get(id, {fullPlot: fullPlot}, function(err, info){
+        res.status(200).send(info);
+    });
+});
+
 ShowClient.get('/all', function(req, res) {
     let source = req.query.source;
     let limit = req.query.limit;
     let offset = req.query.offset;
+    let fullPlot = req.query.fullPlot
     let params = {
         sources: source,
         limit: limit,
@@ -39,7 +49,8 @@ ShowClient.get('/all', function(req, res) {
             promiseArray.push(promise);
         });
         Promise.all(promiseArray).then(function () {
-            res.status(200).send(data.results);
+            let genres = _.uniq(_.flatten(_.map(data.results, (show) => show.genres)));
+            res.status(200).send({genres:genres, shows:data.results});
         }, function(err) {
             res.status(500).send(`${e._response.body.error}`.red);
         });
