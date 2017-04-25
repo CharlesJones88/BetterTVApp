@@ -9,15 +9,13 @@ import { AppComponent } from './app.component';
 import { MovieDetailComponent } from './movie-detail.component';
 import { ShowDetailComponent } from './show-detail.component';
 import { MovieDetailDialog } from './movie-detail.dialog';
-import { ComponentNameComponent } from './component-name/component-name.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MovieDetailComponent,
     ShowDetailComponent,
-    MovieDetailDialog,
-    ComponentNameComponent
+    MovieDetailDialog
   ],
   imports: [
     MaterialModule.forRoot(),
