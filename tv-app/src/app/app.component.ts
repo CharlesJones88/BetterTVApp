@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
   public shows: Show[] = [];
   public showList = [];
   public filteredShowList = [];
+  public showGenres = [];
   private movieLimit: number = 20;
   private movieOffset: number = 0;
   private showLimit: number = 20;
@@ -55,6 +56,10 @@ export class AppComponent implements OnInit {
     });
   }
 
+  openShowDialog(show) {
+
+  }
+
   private getMoviesByGenre(): Promise<any>[] {
     let moviePromises = [];
     let movieSourcePromise = new Promise((resolveSource, rejectSource) => {
@@ -64,12 +69,12 @@ export class AppComponent implements OnInit {
           Object.assign(source, {display_name: val.display_name, type: val.type});
           return source;
         }), 'type');
-        _.each(sources, source => {
+        _.each(sources, (source, index) => {
           let moviePromise = new Promise((resolve, reject) => {
             this.videoService.getMoviesBySource(source.type, this.movieLimit, this.movieOffset).then(value => {
               this.movies = value.movies;
               this.movieGenres = value.genres;
-              _.each(this.movieGenres, (genre) => {
+              _.each(this.movieGenres, genre => {
                 let moviesMatchingGenre = this.movies.filter(movie => movie.genres.indexOf(genre) !== -1);
                 if(localStorage.getItem('hidden-movies')) {
                   let hiddenMovies = JSON.parse(localStorage.getItem('hidden-movies'));
@@ -88,7 +93,9 @@ export class AppComponent implements OnInit {
               this.movieList = _.sortBy(this.movieList, ['genre']);
               this.filteredMovieList = _.cloneDeep(this.movieList);
               resolve();
-              resolveSource();
+              if(index === sources.length - 1) {
+                resolveSource();
+              }
             });
           });
           moviePromises.push(moviePromise);
@@ -109,15 +116,33 @@ export class AppComponent implements OnInit {
           Object.assign(source, {display_name: val.display_name, type: val.type});
           return source;
         }), 'type');
-        _.each(sources, source => {
+        _.each(sources, (source, index) => {
           let showPromise = new Promise((resolve, reject) => {
-            this.videoService.getShowsBySource(source.type, this.showLimit, this.showOffset)
-            .then(value => {
-              this.shows = value;
-              this.showList.push({source: source.display_name, shows: this.shows});
-              this.showList = _.sortBy(this.showList, ['source']);
+            this.videoService.getShowsBySource(source.type, this.showLimit, this.showOffset).then(value => {
+              this.shows = value.shows;
+              this.showGenres = value.genres;
+              _.each(this.showGenres, genre => {
+                let showsMatchingGenre = this.shows.filter(show => show.genres.indexOf(genre) !== -1);
+                if(localStorage.getItem('hidden-shows')) {
+                  let hiddenShows = JSON.parse(localStorage.getItem('hidden-shows'));
+                  _.each(hiddenShows, (hidden) => {
+                    showsMatchingGenre = _.reject(showsMatchingGenre, show => show.imdb_id === hidden);
+                  });
+                }
+                if(this.showList.find(category => category.genre === genre)) {
+                  this.showList.find(category => category.genre === genre).shows
+                    = _.uniqBy(this.showList.find(category => category.genre === genre).shows
+                       .concat(showsMatchingGenre), 'title');
+                } else {
+                  this.showList.push({genre: genre, shows: showsMatchingGenre});
+                }
+              });
+              this.showList = _.sortBy(this.showList, ['genre']);
+              this.filteredShowList = _.cloneDeep(this.showList);
               resolve();
-              resolveSource();
+              if(index === sources.length - 1) {
+                resolveSource();
+              }
             });
           });
           showPromises.push(showPromise);

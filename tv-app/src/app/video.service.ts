@@ -10,9 +10,7 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class VideoService {
-    constructor(private http: Http) {
-
-    }
+    constructor(private http: Http) {}
 
     getMoviesSources(): Promise<Source[]> {
         return this.http.get(`/api/v1/movies/sources`)
@@ -57,21 +55,21 @@ export class VideoService {
                         .then(response => response.json());
     }
 
-    getShowsBySource(source: string, limit: number, offset: number): Promise<Show[]> {
+    getShowsBySource(source: string, limit: number, offset: number): Promise<any> {
         return this.http.get(`/api/v1/shows/all?source=${source}&limit=${limit}&offset=${offset}`)
                         .toPromise()
                         .then(response => {
                             let res = response.json();
-                            let shows = _.map(res, show => {
+                            res.shows = _.map(res.shows, show => {
                                 let sho = new Show();
                                 Object.assign(sho, show);
                                 return sho;
                             });
-                            return shows;
+                            return res;
                         });
     }
 
-    getShows(limit: number, offset: number): Promise<Show[]> {
+    getShows(limit: number, offset: number): Promise<any> {
         return this.http.get(`/api/v1/shows/all?limit=${limit}&offset=${offset}`)
                         .toPromise()
                         .then(response => response.json());
@@ -91,7 +89,7 @@ export class VideoService {
     getMovieRatings() {
         return ["G", "PG", "PG-13", "R", "NR"];
     }
-    getShowRatings(){
+    getShowRatings() {
       return ["TV-PG","TV-14","TV-MA","R","Unrated"];
     }
 }

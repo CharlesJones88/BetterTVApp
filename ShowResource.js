@@ -62,7 +62,6 @@ ShowClient.get('/all', function(req, res) {
 });
 
 ShowClient.get('/sources', function(req, res) {
-    // let genre = req.query.genre;
     Guidebox.sources.list({filter: 'show'})
     .then(function(data) {
         res.status(200).send(data.results);
