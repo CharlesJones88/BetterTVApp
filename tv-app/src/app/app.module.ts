@@ -9,13 +9,15 @@ import { AppComponent } from './app.component';
 import { MovieDetailComponent } from './movie-detail.component';
 import { ShowDetailComponent } from './show-detail.component';
 import { MovieDetailDialog } from './movie-detail.dialog';
+import { ShowDetailDialog } from './show-detail.dialog';
 
 @NgModule({
   declarations: [
     AppComponent,
     MovieDetailComponent,
     ShowDetailComponent,
-    MovieDetailDialog
+    MovieDetailDialog,
+    ShowDetailDialog
   ],
   imports: [
     MaterialModule.forRoot(),
@@ -29,7 +31,8 @@ import { MovieDetailDialog } from './movie-detail.dialog';
     MdDialogModule
   ],
   entryComponents: [
-    MovieDetailDialog
+    MovieDetailDialog,
+    ShowDetailDialog
   ],
   providers: [],
   bootstrap: [AppComponent],
@@ -38,7 +41,8 @@ import { MovieDetailDialog } from './movie-detail.dialog';
     MdToolbarModule,
     MdButtonModule,
     MdDialogModule,
-    MovieDetailDialog
+    MovieDetailDialog,
+    ShowDetailDialog
   ],
 })
 export class AppModule { }
