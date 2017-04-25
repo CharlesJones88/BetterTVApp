@@ -36,11 +36,7 @@ ShowClient.get('/all', function(req, res) {
                         console.log(`${err}`.red);
                         reject(err);
                     } else {
-                        if(info.rated){
-                            show.rating = info.rated;
-                        }else{
-                            show.rating = "Unrated";
-                        }
+                        show.rating = info.rated;
                         show.genres = info.genres.split(',');
                         _.each(show.genres, genre => genre.trim());
                         show.plot = info.plot;
