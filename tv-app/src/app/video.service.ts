@@ -71,10 +71,21 @@ export class VideoService {
                         });
     }
 
-    getShows(limit: number, offset: number) {
+    getShows(limit: number, offset: number): Promise<Show[]> {
         return this.http.get(`/api/v1/shows/all?limit=${limit}&offset=${offset}`)
                         .toPromise()
                         .then(response => response.json());
+    }
+
+    getShow(id: string, fullPlot: boolean): Promise<Show> {
+      return this.http.get(`/api/v1/shows/show?id=${id}&fullPlot=${fullPlot}`)
+        .toPromise()
+        .then(response => {
+          let res = response.json();
+          let show = new Show();
+          Object.assign(show, res);
+          return show;
+        });
     }
 
     getMovieRatings() {
@@ -84,3 +95,4 @@ export class VideoService {
       return ["TV-PG","TV-14","TV-MA","R","Unrated"];
     }
 }
+

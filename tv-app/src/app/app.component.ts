@@ -78,7 +78,7 @@ export class AppComponent implements OnInit {
                   });
                 }
                 if(this.movieList.find(category => category.genre === genre)) {
-                  this.movieList.find(category => category.genre === genre).movies 
+                  this.movieList.find(category => category.genre === genre).movies
                     = _.uniqBy(this.movieList.find(category => category.genre === genre).movies
                       .concat(moviesMatchingGenre), 'title');
                 } else {
@@ -185,7 +185,7 @@ export class AppComponent implements OnInit {
     return 0;
   }
 
-  private getShowRatings(): string[] {
+  getShowRatings(): string[] {
     return this.videoService.getShowRatings();
   }
 
@@ -210,8 +210,17 @@ export class AppComponent implements OnInit {
   filterMovieRatings(item, index) {
     item.movies = _.cloneDeep(this.movieList[index].movies);
     if(this.selectedRatings[index].length > 0) {
-      item.movies = _.filter(item.movies, (movie: Movie) => 
+      item.movies = _.filter(item.movies, (movie: Movie) =>
         this.selectedRatings[index].indexOf(movie.rating) !== -1);
+    }
+  }
+
+
+  filterShowRatings(item, index) {
+    item.show = _.cloneDeep(this.showList[index].show);
+    if(this.selectedRatings[index].length > 0) {
+      item.shows = _.filter(item.shows, (show: Show) =>
+      this.selectedRatings[index].indexOf(show.rating) !== -1);
     }
   }
 }
