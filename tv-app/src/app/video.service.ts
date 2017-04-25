@@ -32,8 +32,8 @@ export class VideoService {
                         });
     }
 
-    getMovie(id: string, fullPlot: boolean): Promise<Movie> {
-        return this.http.get(`/api/v1/movies/movie?id=${id}&fullPlot=${fullPlot}`)
+    getMovie(id: string): Promise<Movie> {
+        return this.http.get(`/api/v1/movies/movie?id=${id}`)
                         .toPromise()
                         .then(response => {
                             let res = response.json();
@@ -75,8 +75,8 @@ export class VideoService {
                         .then(response => response.json());
     }
 
-    getShow(id: string, fullPlot: boolean): Promise<Show> {
-      return this.http.get(`/api/v1/shows/show?id=${id}&fullPlot=${fullPlot}`)
+    getShow(id: string): Promise<Show> {
+      return this.http.get(`/api/v1/shows/show?id=${id}`)
         .toPromise()
         .then(response => {
           let res = response.json();

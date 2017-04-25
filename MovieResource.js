@@ -1,6 +1,6 @@
 let express = require('express');
 let nconf = require('nconf');
-let omdb = require('omdb');
+let imdb = require('imdb-api');
 let _ = require('lodash');
 nconf.file({file:'config.json'});
 
@@ -12,8 +12,7 @@ let MovieClient = express.Router();
 
 MovieClient.get('/movie', function(req, res) {
     let id = req.query.id;
-    let fullPlot = req.query.fullPlot;
-    omdb.get(id, {fullPlot: fullPlot}, function(err, info) {
+    imdb.getById(id).then(function(info) {
         res.status(200).send(info);
     });
 });
@@ -33,15 +32,16 @@ MovieClient.get('/all', function(req, res) {
         let promiseArray = [];
         data.results.forEach(movie => {
             let promise = new Promise((resolve, reject) => {            
-                omdb.get(movie.imdb, {tomatoes: true}, function(err, info) {
+                imdb.getById(movie.imdb, function(err, info) {
                     if(err) {
                         console.log(`${err}`.red);
                         reject(err);
                     } else {
                         movie.runtime = info.runtime;
                         movie.plot = info.plot;
-                        movie.genres = info.genres;
-                        movie.rated = info.imdb.rating;
+                        movie.genres = info.genres.split(',');
+                        _.each(movie.genres, genre => genre.trim());
+                        movie.rated = info.rating;
                         movie.awards = info.awards;
                         resolve();
                     }

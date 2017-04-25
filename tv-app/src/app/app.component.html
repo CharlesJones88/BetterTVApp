@@ -1,5 +1,5 @@
-<md-spinner *ngIf="loading" class="loader" color="warn"></md-spinner>
-<div *ngIf="!loading">
+<md-spinner *ngIf="loading && !error" class="loader" color="warn"></md-spinner>
+<div *ngIf="!loading && !error">
   <div *ngFor="let item of filteredMovieList; let i = index">
     <md-toolbar color="accent" class="padding-bottom">
       <h1>{{item.genre}}</h1>
@@ -45,4 +45,7 @@
       <show-detail [show]="show" [openDialog]="openShowDialog" [showList]="showList" [filteredShowList]="filteredShowList"></show-detail>
     </div>
   </div>
+</div>
+<div *ngIf="error">
+  <h1 class="centered">Movies and Shows are currently unavailable</h1>
 </div>

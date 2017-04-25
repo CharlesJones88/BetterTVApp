@@ -17,6 +17,7 @@ import * as _ from 'lodash';
 })
 export class AppComponent implements OnInit {
   public loading: boolean;
+  public error: boolean = false;
   private ascending: boolean = true;
   public movies: Movie[] = [];
   public movieList = [];
@@ -42,7 +43,7 @@ export class AppComponent implements OnInit {
   }
 
   openMovieDialog(movie) {
-    this.videoService.getMovie(movie.imdb, true).then(value => {
+    this.videoService.getMovie(movie.imdb).then(value => {
       let dialogRef = this.dialog.open(MovieDetailDialog);
       movie.fullPlot = value.plot;
       dialogRef.componentInstance.movie = movie;
@@ -59,7 +60,7 @@ export class AppComponent implements OnInit {
   }
 
   openShowDialog(show) {
-    this.videoService.getShow(show.imdb_id, true).then(value => {
+    this.videoService.getShow(show.imdb_id).then(value => {
       let dialogRef = this.dialog.open(ShowDetailDialog);
       show.fullPlot = value.plot;
       dialogRef.componentInstance.show = show;
@@ -111,11 +112,21 @@ export class AppComponent implements OnInit {
               if(index === sources.length - 1) {
                 resolveSource();
               }
+            }, err => {
+              if(err) {
+                this.error = true;
+                reject();
+              }
             });
           });
           moviePromises.push(moviePromise);
         });
         this.movieOffset += this.movieLimit;
+      }, err => {
+        if(err) {
+          this.error = true;
+          rejectSource();
+        }
       });
     });
     moviePromises.push(movieSourcePromise);
@@ -158,11 +169,21 @@ export class AppComponent implements OnInit {
               if(index === sources.length - 1) {
                 resolveSource();
               }
+            }, err => {
+              if(err) {
+                this.error = true;
+                reject();
+              }
             });
           });
           showPromises.push(showPromise);
         });
         this.showOffset += this.showLimit;
+      }, err => {
+        if(err) {
+          this.error = true;
+          rejectSource();
+        }
       });
     });
     showPromises.push(showSourcePromise);

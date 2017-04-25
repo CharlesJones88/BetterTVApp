@@ -1,6 +1,6 @@
 let express = require('express');
 let nconf = require('nconf');
-let omdb = require('omdb');
+let imdb = require('imdb-api');
 let _ = require('lodash');
 nconf.file({file:'config.json'});
 
@@ -10,10 +10,9 @@ let Guidebox = require('guidebox')(apiKey);
 
 let ShowClient = express.Router();
 
-ShowClient.get('/show', function(req, res){
+ShowClient.get('/show', function(req, res) {
     let id = req.query.id;
-    let fullPlot = req.query.fullPlot;
-    omdb.get(id, {fullPlot: fullPlot}, function(err, info){
+    imdb.getById(id).then(function(info) {
         res.status(200).send(info);
     });
 });
@@ -33,7 +32,7 @@ ShowClient.get('/all', function(req, res) {
         let promiseArray = [];
         data.results.forEach(show => {
             let promise = new Promise((resolve, reject) => {
-                omdb.get(show.imdb_id, {tomatoes: true}, function (err, info) {
+                imdb.getById(show.imdb_id, function (err, info) {
                     if (err) {
                         console.log(`${err}`.red);
                         reject(err);
@@ -43,9 +42,10 @@ ShowClient.get('/all', function(req, res) {
                         }else{
                             show.rating = "Unrated";
                         }
-                        show.genres = info.genres;
+                        show.genres = info.genres.split(',');
+                        _.each(show.genres, genre => genre.trim());
                         show.plot = info.plot;
-                        show.rated = info.imdb.rating;
+                        show.rated = info.rating;
                         resolve();
                     }
                 });
