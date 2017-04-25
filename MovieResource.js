@@ -39,7 +39,7 @@ MovieClient.get('/all', function(req, res) {
                         movie.runtime = info.runtime;
                         movie.plot = info.plot;
                         movie.genres = info.genres.split(',');
-                        _.each(movie.genres, genre => genre = genre.trim());
+                        movie.genres = _.map(movie.genres, genre => genre.trim());
                         movie.rated = info.rating;
                         movie.awards = info.awards;
                         resolve();

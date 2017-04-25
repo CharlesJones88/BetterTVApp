@@ -38,7 +38,7 @@ ShowClient.get('/all', function(req, res) {
                     } else {
                         show.rating = info.rated;
                         show.genres = info.genres.split(',');
-                        _.each(show.genres, genre => genre = genre.trim());
+                        show.genres = _.map(show.genres, genre => genre.trim());
                         show.plot = info.plot;
                         show.rated = info.rating;
                         resolve();
