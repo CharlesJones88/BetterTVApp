@@ -4,12 +4,16 @@
     <md-toolbar color="accent" class="padding-bottom">
       <h1>{{item.genre}}</h1>
       <span class="spacer"></span>
+      <h3 class="filter-title">Sort:</h3>
       <button md-button (click)="movieTitleSort(item)">Title</button>
       <button md-button (click)="movieRatingSort(item)">Rating</button>
       <button md-button (click)="movieScoreSort(item)">Score</button>
       <md-toolbar-row>
         <span class="spacer"></span>
         <h3 class="filter-title">Filters:</h3>
+        <md-input-container>
+          <input mdInput placeholder="Search" (keyup)="searchMovies($event, item, i)">
+        </md-input-container>
         <md-select multiple="true" placeholder="Ratings" [(ngModel)]="selectedRatings[i]">
           <md-option *ngFor="let rating of getMovieRatings()" (click)="filterMovieRatings(item, i)" [value]="rating">{{rating}}</md-option>
         </md-select>

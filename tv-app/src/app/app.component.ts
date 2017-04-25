@@ -246,7 +246,7 @@ export class AppComponent implements OnInit {
     return 0;
   }
 
-  filterMovieRatings(item, index) {
+  filterMovieRatings(item, index: number) {
     item.movies = _.cloneDeep(this.movieList[index].movies);
     if(this.selectedRatings[index].length > 0) {
       item.movies = _.filter(item.movies, (movie: Movie) =>
@@ -254,12 +254,16 @@ export class AppComponent implements OnInit {
     }
   }
 
-
-  filterShowRatings(item, index) {
-    item.shows = _.cloneDeep(this.showList[index].shows);
+  filterShowRatings(item, index: number) {
+    item.show = _.cloneDeep(this.showList[index].show);
     if(this.selectedRatings[index].length > 0) {
       item.shows = _.filter(item.shows, (show: Show) =>
       this.selectedRatings[index].indexOf(show.rating) !== -1);
     }
+  }
+
+  searchMovies($event, item, index: number) {
+    item.movies = _.cloneDeep(this.movieList[index].movies);
+    item.movies = _.filter(item.movies, (movie: Movie) => movie.title.toLowerCase().startsWith($event.target.value));
   }
 }
