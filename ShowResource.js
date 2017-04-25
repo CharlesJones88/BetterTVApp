@@ -21,7 +21,6 @@ ShowClient.get('/all', function(req, res) {
     let source = req.query.source;
     let limit = req.query.limit;
     let offset = req.query.offset;
-    let fullPlot = req.query.fullPlot;
     let params = {
         sources: source,
         limit: limit,
