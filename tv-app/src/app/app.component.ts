@@ -264,6 +264,6 @@ export class AppComponent implements OnInit {
 
   searchMovies($event, item, index: number) {
     item.movies = _.cloneDeep(this.movieList[index].movies);
-    item.movies = _.filter(item.movies, (movie: Movie) => movie.title.toLowerCase().startsWith($event.target.value));
+    item.movies = _.filter(item.movies, (movie: Movie) => movie.title.toLowerCase().includes($event.target.value));
   }
 }
